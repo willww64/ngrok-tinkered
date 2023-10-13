@@ -16,6 +16,11 @@ func readMsgShared(c conn.Conn) (buffer []byte, err error) {
 		return
 	}
 	c.Debug("Reading message with length: %d", sz)
+	// Check message size to avoid OOM due to malformed messages.
+	if sz > int64(maxMsgSize) {
+		err = errors.New(fmt.Sprintf("Message too large: %d", sz))
+		return
+	}
 
 	buffer = make([]byte, sz)
 	n, err := c.Read(buffer)

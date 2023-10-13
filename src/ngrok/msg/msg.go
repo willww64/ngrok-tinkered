@@ -5,6 +5,7 @@ import (
 	"reflect"
 )
 
+var maxMsgSize = 1024
 var TypeMap map[string]reflect.Type
 
 func init() {
